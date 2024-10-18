@@ -19,7 +19,7 @@ def get_db_connection():
         password=os.getenv("POSTGRES_PASSWORD"),
         
         #
-        # port="7777"
+        
     )
 
 
@@ -27,26 +27,43 @@ def init_db():
     conn = get_db_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("DROP TABLE IF EXISTS feedback")
-            cur.execute("DROP TABLE IF EXISTS conversations")
-
             cur.execute("""
-                CREATE TABLE conversations (
+                CREATE TABLE IF NOT EXISTS conversations (
                     id TEXT PRIMARY KEY,
                     question TEXT NOT NULL,
                     answer TEXT NOT NULL,
-                    
                     timestamp TIMESTAMP WITH TIME ZONE NOT NULL
                 )
             """)
             cur.execute("""
-                CREATE TABLE feedback (
+                CREATE TABLE IF NOT EXISTS feedback (
                     id SERIAL PRIMARY KEY,
                     conversation_id TEXT REFERENCES conversations(id),
                     feedback INTEGER NOT NULL,
                     timestamp TIMESTAMP WITH TIME ZONE NOT NULL
                 )
             """)
+
+            # cur.execute("DROP TABLE IF EXISTS feedback")
+            # cur.execute("DROP TABLE IF EXISTS conversations")
+
+            # cur.execute("""
+            #     CREATE TABLE conversations (
+            #         id TEXT PRIMARY KEY,
+            #         question TEXT NOT NULL,
+            #         answer TEXT NOT NULL,
+                    
+            #         timestamp TIMESTAMP WITH TIME ZONE NOT NULL
+            #     )
+            # """)
+            # cur.execute("""
+            #     CREATE TABLE feedback (
+            #         id SERIAL PRIMARY KEY,
+            #         conversation_id TEXT REFERENCES conversations(id),
+            #         feedback INTEGER NOT NULL,
+            #         timestamp TIMESTAMP WITH TIME ZONE NOT NULL
+            #     )
+            # """)
         conn.commit()
     finally:
         conn.close()

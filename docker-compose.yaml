@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build:
+      context: .  # The Dockerfile and app are inside Flask_App, so context is current directory
+      dockerfile: Dockerfile  # The Dockerfile is also inside Flask_App
+    ports:
+      - "5000:5000"
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      FLASK_APP: ${FLASK_APP}
+      project_path: ${Project_Path}
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app  # Maps the entire Flask_App directory into the container
+      - ./data:/app/data  # Maps the data directory inside Flask_App to /app/data
+    networks:
+      - app_network
+
+  postgres:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: primal_health
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}  # PostgreSQL password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist PostgreSQL data
+    networks:
+      - app_network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3100:3000"
+    depends_on:
+      - postgres
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge

@@ -2,6 +2,11 @@ import os
 import pandas as pd
 from pathlib import Path
 import minsearch
+from dotenv import load_dotenv
+
+# Load variables from the .env file into the environment
+load_dotenv()
+
 
 # print("Current Working Directory:", os.getcwd())
 # project=os.getenv('Project_Path')

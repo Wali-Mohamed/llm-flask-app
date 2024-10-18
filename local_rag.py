@@ -1,15 +1,20 @@
-# rag.py
-
 import time
 from openai import OpenAI
 import minsearch
 import local_ingest
 import json
 import os
+from dotenv import load_dotenv
+
+# Load variables from the .env file into the environment
+load_dotenv()
+
 
 
 # Initialize the OpenAI client
-client = OpenAI()
+api=os.getenv('OPENAI_API_KEY')
+
+client = OpenAI(api_key=api)
 
 
 index = local_ingest.load_index()
@@ -43,7 +48,7 @@ def build_prompt(query, search_results):
 
 def llm(prompt):
     response = client.chat.completions.create(
-        model='gpt-3.5-turbo',
+        model='gpt-4o-mini',
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
