@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primal Health Bot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="hero-background">
+        <div class="overlay">
+            <div class="container">
+                <h1>Primal Health Bot</h1>
+                <h3>By Wali M. Mohamed</h3>
+                <p>Please ask anything about your primal health</p>
+                
+                <div id="question-section">
+                    <textarea id="question-input" placeholder="Enter your question here..."></textarea>
+                    <button id="submit-question">Ask</button>
+                </div>
+                
+                <div id="answer-section" style="display: none;">
+                    <h2>Answer:</h2>
+                    <p id="answer-text"></p>
+                    <div id="feedback-section">
+                        <button id="thumb-up">👍</button>
+                        <button id="thumb-down">👎</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
