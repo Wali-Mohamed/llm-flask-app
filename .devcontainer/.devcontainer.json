@@ -1,0 +1,19 @@
+{
+    "name": "Flask with PostgreSQL",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "postCreateCommand": "pip install -r requirements.txt",
+    "settings": {
+      "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "runArgs": [
+      "--env-file", ".env"
+    ],
+    "forwardPorts": [5000, 5432, 3100],  # Forward ports for Flask, PostgreSQL, and Grafana
+  "remoteEnv": {
+    "POSTGRES_PASSWORD": "${secrets.POSTGRES_PASSWORD}",
+    "GRAFANA_ADMIN_PASSWORD": "${secrets.GRAFANA_ADMIN_PASSWORD}"  # Add Grafana password secret
+  }
+}
+  
